@@ -1,0 +1,106 @@
+<div class="ui " style="margin: 20px;background: url('https://images.pexels.com/photos/242236/pexels-photo-242236.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')" >
+  <form class="ui form" #form='ngForm' >
+<div class="ui ml-3 mb-3">
+    <!--{{selectChannel | json}}-->
+    <div class="equal width fields">
+      <div class="field">
+        <sui-select class="selection" name="news" id="news" placeholder="Select News Channel"
+                    [(ngModel)]="selectnews"
+                    [options]="api.News"
+                    labelField="name"
+                    valueField="value"
+                    (ngModelChange)="getnews()"
+                    [isSearchable]="true"
+                    #select>
+          <sui-select-option *ngFor="let option of select.filteredOptions"
+                             [value]="option">
+          </sui-select-option>
+        </sui-select>
+      </div>
+        <div class="field" *ngIf="selectnews">
+            <button class="ui secondary button my-1">
+                <a href="http://www.abcnews.go.com" target="_blank" *ngIf="selectnews === 'abc-news-au'">Go To  This Website</a>
+                <a href="http://www.bbc.com" target="_blank" *ngIf="selectnews === 'bbc-news'">Go To  This Website</a>
+                <a href="http://www.bbc.co.uk/sport" target="_blank" *ngIf="selectnews === 'bbc-sport'">Go To  This Website</a>
+                <a href="http://www.espn.com" target="_blank" *ngIf="selectnews === 'espn'">Go To  This Website</a>
+                <a href="http://www.businessinsider.com" target="_blank" *ngIf="selectnews === 'business-insider'">Go To  This Website</a>
+                <a href="http://www.buzzfeed.com" target="_blank" *ngIf="selectnews === 'buzzfeed'">Go To  This Website</a>
+                <a href="http://www.cnbc.com" target="_blank" *ngIf="selectnews === 'cnbc'">Go To  This Website</a>
+                <a href="http://www.cnn.com" target="_blank" *ngIf="selectnews === 'cnn'">Go To  This Website</a>
+            </button>
+        </div>
+      <!--<div class="field">-->
+          <!--<button class="ui blue medium button my-1">-->
+            <!--Get News-->
+          <!--</button>-->
+    <!--</div>-->
+
+    </div>
+    <div class="equal width fields">
+        <div class="field">
+            <label>Search By Topic</label>
+            <div class="ui left icon input">
+                <input type="text" placeholder="Search users..." [(ngModel)]="searhing"  name="search" >
+                <i class="users icon"></i>
+            </div>
+        </div>
+        <!--<button class="ui blue medium button" (click)="getsearchdata()" style="margin-top: 22px">-->
+          <!--get queary-->
+        <!--</button>-->
+        <div class="field">
+            <label>Select Multiple Channel</label>
+            <sui-multi-select class="selection" name="searching" id="searching" placeholder="Select Channel"
+                        [(ngModel)]="selectChannel"
+                        [options]="api.News"
+                        labelField="name"
+                        valueField="value"
+                        [isSearchable]="true"
+                        #select>
+                <sui-select-option *ngFor="let option of select.filteredOptions"
+                                   [value]="option">
+                </sui-select-option>
+            </sui-multi-select>
+        </div>
+        <!--{{selectChannel | json}}-->
+        <div class="field mt-4">
+        <button class="ui orange medium button" *ngIf="selectChannel" (click)="getSearch()" style="margin-top: 22px">
+        Get News
+        </button>
+
+        <button class="ui blue medium button" *ngIf="searhing" (click)="getsearchdata()" style="margin-top: 22px">
+       Get News By Query
+        </button>
+        </div>
+    </div>
+</div>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <!--news Data-->
+    <div class="ui segment" *ngIf="details.articles">
+    <div class="ui items" *ngFor="let mynews of details.articles | paginate: { itemsPerPage: 10, currentPage: p }  ">
+       
+      <div class="ui divider"></div>
+      <div class="item">
+          <div class="image">
+              <img src="{{mynews.urlToImage}}" >
+            </div>
+        <div class="content">
+          <div class="header"><a href="{{mynews.url}}" target="black"> {{mynews.author}}</a></div>
+          <div class="meta">
+            <span class="price">{{mynews.publishedAt | date: "shortTime"}}</span>
+            <span class="price">{{mynews.publishedAt | date}}</span>
+          </div>
+          <div class="description">
+              <h5><a href="{{mynews.url}}" target="black"> {{mynews.title}} <strong>....Read More</strong> </a></h5>
+              <p>{{mynews.description}}</p>
+              <div class="ui divider"></div>
+              <p>{{mynews.content}}</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+  </form>
+</div>
+
